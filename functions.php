@@ -33,18 +33,16 @@ add_filter( 'the_content_more_link', 'remove_more_link_scroll' );
 /**
  * デフォルトのサイトアイコンを設定します。
  * カスタマイザーで設定された場合はそちらを使用します。
+ *
+ * @param string $url サイトアイコン URL .
+ * @param int    $size サイトアイコンサイズ .
+ * @return string $url
  */
-function filter_site_icon_meta_tags() {
-	if ( has_site_icon() ) {
-			return;
+function get_default_site_icon_url( $url, $size ) {
+	if ( $url ) {
+		return $url;
 	}
-		$url = get_stylesheet_directory_uri();
-		// 出力される HTML ソースコードを見やすくするめに、最後に空白行を設置
-		echo <<<EOT
-<link rel="icon" href="{$url}/assets/images/cropped-site_icon-32x32.jpg" sizes="32x32" />
-<link rel="icon" href="{$url}/assets/images/cropped-site_icon-192x192.jpg" sizes="192x192" />
-<link rel="apple-touch-icon-precomposed" href="{$url}/assets/images/cropped-site_icon-180x180.jpg" />
-<meta name="msapplication-TileImage" content="{$url}/assets/images/cropped-site_icon-270x270.jpg" />
-EOT;
+	$default_url = get_stylesheet_directory_uri() . '/assets/images/cropped-site_icon-' . $size . 'x' . $size . '.jpg';
+	return $default_url;
 }
-add_filter( 'wp_head', 'filter_site_icon_meta_tags' );
+add_filter( 'get_site_icon_url', 'get_default_site_icon_url', 10, 2 );
