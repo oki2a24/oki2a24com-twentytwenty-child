@@ -29,3 +29,20 @@ function remove_more_link_scroll( $link ) {
 	return $link;
 }
 add_filter( 'the_content_more_link', 'remove_more_link_scroll' );
+
+/**
+ * デフォルトのサイトアイコンを設定します。
+ * カスタマイザーで設定された場合はそちらを使用します。
+ *
+ * @param string $url サイトアイコン URL .
+ * @param int    $size サイトアイコンサイズ .
+ * @return string $url
+ */
+function get_default_site_icon_url( $url, $size ) {
+	if ( $url ) {
+		return $url;
+	}
+	$default_url = get_stylesheet_directory_uri() . '/assets/images/cropped-site_icon-' . $size . 'x' . $size . '.jpg';
+	return $default_url;
+}
+add_filter( 'get_site_icon_url', 'get_default_site_icon_url', 10, 2 );
